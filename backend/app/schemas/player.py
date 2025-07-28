@@ -28,7 +28,7 @@ class PlayerBase(BaseModel):
 
     @model_validator(mode="after")
     def check_clean_sheets_for_gk(self):
-        if self.position == PositionEnum.GK:
+        if self.position in (PositionEnum.GK, PositionEnum.CB, PositionEnum.LB, PositionEnum.RB):
             if self.clean_sheets is None:
                 self.clean_sheets = 0
         else:

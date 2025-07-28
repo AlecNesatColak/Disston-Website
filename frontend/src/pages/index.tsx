@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function HomePage() {
   return (
@@ -199,9 +200,12 @@ export default function HomePage() {
             <h2 className="text-3xl font-bold mb-4">Join Disston City!</h2>
             <p className="text-xl mb-6">Be part of the most successful soccer club in the region</p>
             <div className="flex justify-center space-x-4">
-              <button className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg">
+              <Link
+                href="/player-request"
+                className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg inline-block"
+              >
                 Join Team
-              </button>
+              </Link>
               <button className="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-all duration-300 hover:scale-105">
                 View Schedule
               </button>
