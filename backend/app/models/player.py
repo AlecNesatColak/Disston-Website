@@ -20,7 +20,7 @@ class Player(Base):
 
     # Role & Status
     is_captain = Column(Boolean, default=False)
-    is_active = Column(Boolean, default=True)
+    status = Column(Integer, default=0)
 
     # Performance Totals (aggregated)
     goals = Column(Integer, default=0)

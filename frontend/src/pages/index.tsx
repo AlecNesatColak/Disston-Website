@@ -1,5 +1,84 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
+
+// LeagueTableTabs Component
+function LeagueTableTabs() {
+  // Dummy data for two leagues
+  const suncoastLeague = [
+    { pos: 1, team: "Disston City", played: 10, won: 8, drawn: 1, lost: 1, pts: 25 },
+    { pos: 2, team: "St. Pete United", played: 10, won: 7, drawn: 2, lost: 1, pts: 23 },
+    { pos: 3, team: "Gulfport FC", played: 10, won: 6, drawn: 1, lost: 3, pts: 19 },
+    { pos: 4, team: "Clearwater Rovers", played: 10, won: 4, drawn: 2, lost: 4, pts: 14 },
+  ];
+  const mexicanLeague = [
+    { pos: 1, team: "Disston City", played: 9, won: 7, drawn: 1, lost: 1, pts: 22 },
+    { pos: 2, team: "Tampa Aztecs", played: 9, won: 6, drawn: 2, lost: 1, pts: 20 },
+    { pos: 3, team: "Pinellas FC", played: 9, won: 5, drawn: 1, lost: 3, pts: 16 },
+    { pos: 4, team: "Largo United", played: 9, won: 3, drawn: 2, lost: 4, pts: 11 },
+  ];
+
+  const [activeTab, setActiveTab] = useState("Suncoast League");
+  const tabs = ["Suncoast League", "Mexican League"];
+  const tableData = activeTab === "Suncoast League" ? suncoastLeague : mexicanLeague;
+
+  return (
+    <div>
+      {/* Tab Switcher */}
+      <div className="flex space-x-2 mb-4">
+        {tabs.map((tab) => (
+          <button
+            key={tab}
+            className={`px-4 py-2 rounded-t-lg font-semibold transition-colors duration-200 ${
+              activeTab === tab
+                ? "bg-blue-600 text-white shadow"
+                : "bg-gray-100 text-gray-600 hover:bg-blue-100"
+            }`}
+            onClick={() => setActiveTab(tab)}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+      {/* Table */}
+      <div className="overflow-x-auto">
+        <table className="min-w-full text-sm text-left">
+          <thead>
+            <tr className="bg-blue-50">
+              <th className="px-3 py-2 font-bold">Pos</th>
+              <th className="px-3 py-2 font-bold">Team</th>
+              <th className="px-3 py-2 font-bold">P</th>
+              <th className="px-3 py-2 font-bold">W</th>
+              <th className="px-3 py-2 font-bold">D</th>
+              <th className="px-3 py-2 font-bold">L</th>
+              <th className="px-3 py-2 font-bold">Pts</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tableData.map((row) => (
+              <tr
+                key={row.team}
+                className={
+                  row.team === "Disston City"
+                    ? "bg-green-50 font-bold"
+                    : "hover:bg-gray-50"
+                }
+              >
+                <td className="px-3 py-2">{row.pos}</td>
+                <td className="px-3 py-2">{row.team}</td>
+                <td className="px-3 py-2">{row.played}</td>
+                <td className="px-3 py-2">{row.won}</td>
+                <td className="px-3 py-2">{row.drawn}</td>
+                <td className="px-3 py-2">{row.lost}</td>
+                <td className="px-3 py-2">{row.pts}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
 
 export default function HomePage() {
   return (
@@ -17,6 +96,49 @@ export default function HomePage() {
         <div className="absolute top-40 right-20 w-6 h-6 bg-black rounded-full"></div>
         <div className="absolute bottom-40 left-1/4 w-10 h-10 bg-black rounded-full"></div>
         <div className="absolute bottom-20 right-1/3 w-7 h-7 bg-black rounded-full"></div>
+      </div>
+
+      {/* Floating Team Photos */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none">
+        {/* Top Left Team Photo */}
+        <div className="absolute top-16 left-8 w-64 h-64 rounded-lg shadow-lg transform rotate-3 animate-float-slow overflow-hidden" style={{animationDelay: '0s'}}>
+          <Image
+            src="/images/Banner.jpg"
+            alt="Team Photo 2018"
+            fill
+            className="object-cover"
+          />
+        </div>
+        
+        {/* Top Right Team Photo */}
+        <div className="absolute top-24 right-12 w-64 h-64 rounded-lg shadow-lg transform -rotate-2 animate-float-slow overflow-hidden" style={{animationDelay: '3s'}}>
+          <Image
+            src="/images/Banner.jpg"
+            alt="Team Photo 2019"
+            fill
+            className="object-cover"
+          />
+        </div>
+        
+        {/* Middle Left Team Photo */}
+        <div className="absolute top-1/3 left-4 w-64 h-64 rounded-lg shadow-lg transform rotate-1 animate-float-slow overflow-hidden" style={{animationDelay: '1.5s'}}>
+          <Image
+            src="/images/Banner.jpg"
+            alt="Team Photo 2020"
+            fill
+            className="object-cover"
+          />
+        </div>
+        
+        {/* Middle Right Team Photo */}
+        <div className="absolute top-1/2 right-8 w-64 h-64 rounded-lg shadow-lg transform -rotate-1 animate-float-slow overflow-hidden" style={{animationDelay: '4.5s'}}>
+          <Image
+            src="/images/Banner.jpg"
+            alt="Team Photo 2021"
+            fill
+            className="object-cover"
+          />
+        </div>
       </div>
 
       {/* Top Banner */}
@@ -38,17 +160,22 @@ export default function HomePage() {
           <h1 className="text-4xl font-bold text-gray-800 mb-4 bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">Disston City Soccer Club</h1>
           <p className="text-xl text-gray-600 mb-6">Suncoast & Mexican League Champions</p>
           <div className="flex justify-center space-x-4 text-sm text-gray-500">
-            <span className="bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">🏆 Suncoast League</span>
-            <span className="bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">⚽ Mexican League</span>
-            <span className="bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">📍 Disston City</span>
+            <span className="bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">🏆 Suncoast Soccer League</span>
+            <span className="bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">⚽ Pinellas Park Mexican League</span>
+            <span className="bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">📍 St. Petersburg, FL</span>
           </div>
         </div>
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-          <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 text-center border border-white/20 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <div className="text-3xl font-bold text-blue-600 mb-2">25</div>
-            <div className="text-gray-600">Players</div>
+          <div className="group bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 text-center border border-white/20 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:bg-blue-600">
+            <Link 
+              href="/roster"
+              className="block"
+            >
+              <div className="text-3xl font-bold text-blue-600 mb-2 group-hover:text-white transition-colors duration-300">25</div>
+              <div className="text-gray-600 group-hover:text-white transition-colors duration-300">Players</div>
+            </Link>
           </div>
           <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 text-center border border-white/20 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
             <div className="text-3xl font-bold text-green-600 mb-2">2</div>
@@ -64,6 +191,22 @@ export default function HomePage() {
           </div>
         </div>
 
+        {/* Latest Results */}
+        <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 mb-8 border border-white/20">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">🏆 Latest Results</h2>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg border border-blue-200 hover:shadow-md transition-shadow">
+              <div className="flex items-center space-x-4">
+                <div className="text-sm text-gray-500">Sun, Dec 15</div>
+                <div className="font-semibold">Disston City vs </div>
+              </div>
+              <div className="text-sm text-gray-500"> 1-0 W</div>
+              <div className="text-sm text-gray-500">2:00 PM - Suncoast League</div>
+            </div>
+          </div>
+        </div>
+        
+
         {/* Upcoming Matches */}
         <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 mb-8 border border-white/20">
           <h2 className="text-2xl font-bold text-gray-800 mb-6">⚽ Upcoming Matches</h2>
@@ -71,21 +214,21 @@ export default function HomePage() {
             <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg border border-blue-200 hover:shadow-md transition-shadow">
               <div className="flex items-center space-x-4">
                 <div className="text-sm text-gray-500">Sun, Dec 15</div>
-                <div className="font-semibold">Disston City vs Thunder FC</div>
+                <div className="font-semibold">Disston City vs </div>
               </div>
               <div className="text-sm text-gray-500">2:00 PM - Suncoast League</div>
             </div>
             <div className="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-green-100 rounded-lg border border-green-200 hover:shadow-md transition-shadow">
               <div className="flex items-center space-x-4">
                 <div className="text-sm text-gray-500">Sun, Dec 22</div>
-                <div className="font-semibold">Disston City vs Eagles United</div>
+                <div className="font-semibold">Disston City vs </div>
               </div>
               <div className="text-sm text-gray-500">3:30 PM - Mexican League</div>
             </div>
             <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg border border-purple-200 hover:shadow-md transition-shadow">
               <div className="flex items-center space-x-4">
                 <div className="text-sm text-gray-500">Sun, Dec 29</div>
-                <div className="font-semibold">Disston City vs Phoenix SC</div>
+                <div className="font-semibold">Disston City vs </div>
               </div>
               <div className="text-sm text-gray-500">1:00 PM - Suncoast League</div>
             </div>
@@ -101,7 +244,7 @@ export default function HomePage() {
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">1</div>
                   <div>
-                    <div className="font-semibold">Alex Rodriguez</div>
+                    <div className="font-semibold"></div>
                     <div className="text-sm text-gray-500">Forward</div>
                   </div>
                 </div>
@@ -111,7 +254,7 @@ export default function HomePage() {
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center text-white font-bold">2</div>
                   <div>
-                    <div className="font-semibold">Marcus Johnson</div>
+                    <div className="font-semibold"></div>
                     <div className="text-sm text-gray-500">Midfielder</div>
                   </div>
                 </div>
@@ -121,7 +264,7 @@ export default function HomePage() {
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold">3</div>
                   <div>
-                    <div className="font-semibold">David Chen</div>
+                    <div className="font-semibold"></div>
                     <div className="text-sm text-gray-500">Striker</div>
                   </div>
                 </div>
@@ -137,7 +280,7 @@ export default function HomePage() {
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">1</div>
                   <div>
-                    <div className="font-semibold">Mike Thompson</div>
+                    <div className="font-semibold"></div>
                     <div className="text-sm text-gray-500">Goalkeeper</div>
                   </div>
                 </div>
@@ -147,7 +290,7 @@ export default function HomePage() {
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center text-white font-bold">2</div>
                   <div>
-                    <div className="font-semibold">Carlos Silva</div>
+                    <div className="font-semibold"></div>
                     <div className="text-sm text-gray-500">Defender</div>
                   </div>
                 </div>
@@ -157,7 +300,7 @@ export default function HomePage() {
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold">3</div>
                   <div>
-                    <div className="font-semibold">Ryan Wilson</div>
+                    <div className="font-semibold"></div>
                     <div className="text-sm text-gray-500">Defender</div>
                   </div>
                 </div>
@@ -165,6 +308,13 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* League Tables Section with Tab Switcher */}
+        <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 mb-8 border border-white/20">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">🏆 League Tables</h2>
+          {/* Tab Switcher */}
+          <LeagueTableTabs />
         </div>
 
         {/* Club News */}
@@ -181,11 +331,7 @@ export default function HomePage() {
               <div className="font-semibold text-gray-800">Double League Challenge</div>
               <div className="text-gray-600">Disston City is leading both the Suncoast League and Mexican League with only 3 matchdays remaining in each.</div>
             </div>
-            <div className="border-l-4 border-purple-500 pl-4 p-3 bg-gradient-to-r from-purple-50 to-purple-100 rounded-r-lg border border-purple-200">
-              <div className="text-sm text-gray-500 mb-1">Dec 5, 2024</div>
-              <div className="font-semibold text-gray-800">All-Star Game Announced</div>
-              <div className="text-gray-600">The annual All-Star game will be held on January 20th, featuring the club&apos;s top performers.</div>
-            </div>
+
           </div>
         </div>
 

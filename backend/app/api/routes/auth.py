@@ -10,6 +10,10 @@ from app.services.auth_service import authenticate_user
 
 router = APIRouter()
 
+@router.get("/")
+def health_check():
+    return "healthy"
+
 @router.post("/register", response_model=UserRead)
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
     user = create_user(db, user)

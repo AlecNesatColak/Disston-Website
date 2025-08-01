@@ -14,7 +14,7 @@ class PlayerBase(BaseModel):
     profile_image_url: Optional[str] = Field(None, max_length=500)  # enforce a sane URL limit
 
     is_captain: bool = False
-    is_active: bool = True
+    status: int = Field(..., ge=0, le=2)
 
     goals: int = Field(0, ge=0)
     assists: int = Field(0, ge=0)
@@ -49,3 +49,11 @@ class PlayerRead(PlayerBase):
 
     class Config:
         orm_mode = True
+
+
+class PlayerRosterInfo(BaseModel):
+    first_name: str
+    last_name: str
+    position: PositionEnum
+    jersey_number: Optional[int] = Field(None, ge=0, le=99)  # max 2-digit jersey numbers
+    

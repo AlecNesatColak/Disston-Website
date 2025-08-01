@@ -10,7 +10,8 @@ load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if not DATABASE_URL:
-    raise ValueError("DATABASE_URL is not set in the environment.")
+    # Fallback to SQLite for local development
+    DATABASE_URL = "sqlite:///./app.db"
 
 # Set up SQLAlchemy engine and session
 engine = create_engine(DATABASE_URL)

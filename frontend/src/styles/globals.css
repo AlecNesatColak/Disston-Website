@@ -1,3 +1,48 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom floating animation for team photos */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px) rotate(var(--rotation));
+  }
+  25% {
+    transform: translateY(-8px) translateX(4px) rotate(var(--rotation));
+  }
+  50% {
+    transform: translateY(-4px) translateX(-6px) rotate(var(--rotation));
+  }
+  75% {
+    transform: translateY(6px) translateX(2px) rotate(var(--rotation));
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+  --rotation: 0deg;
+}
+
+.animate-float-slow[style*="rotate(3deg)"] {
+  --rotation: 3deg;
+}
+
+.animate-float-slow[style*="rotate(-2deg)"] {
+  --rotation: -2deg;
+}
+
+.animate-float-slow[style*="rotate(1deg)"] {
+  --rotation: 1deg;
+}
+
+.animate-float-slow[style*="rotate(-1deg)"] {
+  --rotation: -1deg;
+}
+
+.animate-float-slow[style*="rotate(2deg)"] {
+  --rotation: 2deg;
+}
+
+.animate-float-slow[style*="rotate(-3deg)"] {
+  --rotation: -3deg;
+}
