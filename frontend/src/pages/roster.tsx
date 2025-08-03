@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import Player from '@/models/enums/interfaces/player';
+import Player from '@/models/interfaces/player';
 import { getPositionColor } from '@/models/helpers/position-color';
 
 

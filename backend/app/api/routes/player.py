@@ -31,6 +31,31 @@ def delete_player(player_id: int, db: Session = Depends(get_db)):
     return db_player
 
 
+@router.get("/requests", response_model=list[PlayerRead])
+def get_roster(db: Session = Depends(get_db)):
+    return db.query(Player).filter(Player.status == 2).all()
+
+@router.put("/{player_id}/approve", response_model=PlayerRead)
+def approve_player(player_id: int, db: Session = Depends(get_db)):
+    db_player = db.query(Player).filter(Player.id == player_id).first()
+    if not db_player:
+        raise HTTPException(status_code=404, detail="Player not found")
+    db_player.status = 1
+    db.commit()
+    db.refresh(db_player)
+    return db_player
+
+@router.delete("/{player_id}/reject", response_model=PlayerRead)
+def reject_player(player_id: int, db: Session = Depends(get_db)):
+    db_player = db.query(Player).filter(Player.id == player_id).first()
+    if not db_player:
+        raise HTTPException(status_code=404, detail="Player not found")
+    db.delete(db_player)
+    db.commit()
+    return db_player
+
+
+
 @router.get("/roster", response_model=list[PlayerRosterInfo])
 def get_roster(db: Session = Depends(get_db)):
     return db.query(Player).filter(Player.status == 1).all()

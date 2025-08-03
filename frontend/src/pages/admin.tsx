@@ -1,7 +1,42 @@
+import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
+import { use, useEffect, useState } from 'react';
+import Player from '../models/interfaces/player';
+
+
 
 export default function HomePage() {
+  const API_BASE = "http://localhost:8000";
+  const [playerRequests, setPlayerRequests] = useState<Player[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const handleApprove = async (playerId: number) => {
+  try {
+    await axios.put(`${API_BASE}/players/${playerId}/approve`);
+    setPlayerRequests(prev => prev.filter(p => p.id !== playerId));
+  } catch (err) {
+    console.error("Failed to approve player:", err);
+  }
+};
+
+const handleReject = async (playerId: number) => {
+  try {
+    await axios.delete(`${API_BASE}/players/${playerId}/reject`);
+    setPlayerRequests(prev => prev.filter(p => p.id !== playerId));
+  } catch (err) {
+    console.error("Failed to reject player:", err);
+  }
+};
+
+  useEffect(() => {
+    // Fetch player requests from the API
+    axios.get('http://localhost:8000/players/requests')
+      .then(res => setPlayerRequests(res.data))
+      .catch(err => console.error("Failed to fetch players", err))
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 relative overflow-hidden">
       {/* Background Pattern */}
@@ -65,16 +100,33 @@ export default function HomePage() {
         {/* Player Requests */}
         <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 mb-8 border border-white/20">
           <h2 className="text-2xl font-bold text-gray-800 mb-6">👤 Player Requests</h2>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg border border-blue-200 hover:shadow-md transition-shadow">
-              <div className="flex items-center space-x-4">
-                <div className="text-sm text-gray-500">Sun, Dec 15</div>
-                <div className="font-semibold">Player Request</div>
-              </div>
-              <div className="text-sm text-gray-500">2:00 PM - Suncoast League</div>
+
+          {loading ? (
+            <p className="text-gray-500">Loading...</p>
+          ) : playerRequests.length === 0 ? (
+            <p className="text-gray-500">No pending player requests.</p>
+          ) : (
+            <div className="space-y-4">
+              {playerRequests.map((player) => (
+                <div
+                  key={player.id}
+                  className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg border border-blue-200 hover:shadow-md transition-shadow"
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className="font-semibold">{player.first_name} {player.last_name}</div>
+                    <div className="text-sm text-gray-500">{player.position}</div>
+                    <div className="text-sm text-gray-500">#{player.jersey_number}</div>
+                    <div>
+                      <button onClick={() => handleApprove(player.id)} className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">Accept</button>
+                      <button onClick={() => handleReject(player.id)} className="ml-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors">Reject</button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
+          )}
         </div>
+
 
 
         {/* Upcoming Matches */}
@@ -104,7 +156,7 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-
+        
 
         {/* Club News */}
         <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 mb-8 border border-white/20">

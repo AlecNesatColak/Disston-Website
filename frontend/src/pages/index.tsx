@@ -1,75 +1,29 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import Image from 'next/image';
-import React from 'react';
 import Link from 'next/link';
 import { suncoastLeague, mexicanLeague } from '../components/LeagueTableTabs';
-
+import MiniLeagueTableTabs from '../components/homepage/MiniLeagueTableTabs';
+import HOMEPAGE_CONSTANTS from "../components/homepage/constants/homepage-constants";
+import Player from '@/models/interfaces/player';
 
 export default function HomePage() {
-  // Only show top 4 teams for homepage
   const topSuncoast = suncoastLeague.slice(0, 4);
   const topMexican = mexicanLeague.slice(0, 4);
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mini tab switcher for homepage
-  function MiniLeagueTableTabs() {
-    const [activeTab, setActiveTab] = React.useState("Suncoast League");
-    const tabs = ["Suncoast League", "Mexican League"];
-    const tableData = activeTab === "Suncoast League" ? topSuncoast : topMexican;
+  // Fetch players data
+  useEffect(() => {
+    axios.get("http://localhost:8000/players")
+      .then(res => setPlayers(res.data))
+      .catch(err => console.error("Failed to fetch players", err))
+      .finally(() => setLoading(false));
+  }, []);
 
-    return (
-      <div>
-        <div className="flex space-x-2 mb-4">
-          {tabs.map((tab) => (
-            <button
-              key={tab}
-              className={`px-4 py-2 rounded-t-lg font-semibold transition-colors duration-200 ${
-                activeTab === tab
-                  ? "bg-blue-600 text-white shadow"
-                  : "bg-gray-100 text-gray-600 hover:bg-blue-100"
-              }`}
-              onClick={() => setActiveTab(tab)}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
-        <div className="overflow-x-auto">
-          <table className="min-w-full text-sm text-left">
-            <thead>
-              <tr className="bg-blue-50">
-                <th className="px-3 py-2 font-bold">Pos</th>
-                <th className="px-3 py-2 font-bold">Team</th>
-                <th className="px-3 py-2 font-bold">P</th>
-                <th className="px-3 py-2 font-bold">W</th>
-                <th className="px-3 py-2 font-bold">D</th>
-                <th className="px-3 py-2 font-bold">L</th>
-                <th className="px-3 py-2 font-bold">Pts</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tableData.map((row) => (
-                <tr
-                  key={row.team}
-                  className={
-                    row.team === "Disston City"
-                      ? "bg-green-50 font-bold"
-                      : "hover:bg-gray-50"
-                  }
-                >
-                  <td className="px-3 py-2">{row.pos}</td>
-                  <td className="px-3 py-2">{row.team}</td>
-                  <td className="px-3 py-2">{row.played}</td>
-                  <td className="px-3 py-2">{row.won}</td>
-                  <td className="px-3 py-2">{row.drawn}</td>
-                  <td className="px-3 py-2">{row.lost}</td>
-                  <td className="px-3 py-2">{row.pts}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    );
-  }
+  const playerCount = players.length;
+
+
 
   return (
     <div className="min-h-screen relative overflow-hidden"
@@ -191,12 +145,12 @@ export default function HomePage() {
         <div className="rounded-3xl bg-white/80 backdrop-blur-lg shadow-2xl border-2 border-blue-200/60 p-6 md:p-12">
           {/* --- all your content below here --- */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4 bg-gradient-to-r from-blue-600 to-yellow-400 bg-clip-text text-transparent">Disston City Soccer Club</h1>
-            <p className="text-xl text-gray-600 mb-6">Suncoast & Mexican League Champions</p>
+            <h1 className="text-4xl font-bold text-gray-800 mb-4 bg-gradient-to-r from-blue-600 to-yellow-400 bg-clip-text text-transparent">{HOMEPAGE_CONSTANTS.HERO_TITLE}</h1>
+            <p className="text-xl text-gray-600 mb-6">{HOMEPAGE_CONSTANTS.HERO_SUBTITLE}</p>
             <div className="flex justify-center space-x-4 text-sm text-gray-500">
-              <span className="bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">🏆 Suncoast Soccer League</span>
-              <span className="bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">⚽ Pinellas Park Mexican League</span>
-              <span className="bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">📍 St. Petersburg, FL</span>
+              <span className="bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">{HOMEPAGE_CONSTANTS.HERO_LEFT_DESC}</span>
+              <span className="bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">{HOMEPAGE_CONSTANTS.HERO_MIDDLE_DESC}</span>
+              <span className="bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">{HOMEPAGE_CONSTANTS.HERO_RIGHT_DESC}</span>
             </div>
           </div>
 
@@ -207,7 +161,7 @@ export default function HomePage() {
                 href="/roster"
                 className="block"
               >
-                <div className="text-3xl font-bold text-blue-600 mb-2 group-hover:text-white transition-colors duration-300">25</div>
+                <div className="text-3xl font-bold text-blue-600 mb-2 group-hover:text-white transition-colors duration-300">{playerCount}</div>
                 <div className="text-gray-600 group-hover:text-white transition-colors duration-300">Players</div>
               </Link>
             </div>
@@ -227,7 +181,7 @@ export default function HomePage() {
 
           {/* Latest Results */}
           <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 mb-8 border border-white/20">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">🏆 Latest Results</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">{HOMEPAGE_CONSTANTS.CONTAINER_1_TITLE}</h2>
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg border border-blue-200 hover:shadow-md transition-shadow">
                 <div className="flex items-center space-x-4">
@@ -243,7 +197,7 @@ export default function HomePage() {
 
           {/* Upcoming Matches */}
           <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 mb-8 border border-white/20">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">⚽ Upcoming Matches</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">{HOMEPAGE_CONSTANTS.CONTAINER_2_TITLE}</h2>
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg border border-blue-200 hover:shadow-md transition-shadow">
                 <div className="flex items-center space-x-4">
@@ -272,7 +226,7 @@ export default function HomePage() {
           {/* Top Performers */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
             <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">🏆 Top Scorers</h3>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">{HOMEPAGE_CONSTANTS.CONTAINER_3_TITLE}</h3>
               <div className="space-y-3">
                 <div className="flex items-center justify-between p-3 bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-lg border border-yellow-200">
                   <div className="flex items-center space-x-3">
@@ -308,7 +262,7 @@ export default function HomePage() {
             </div>
 
             <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">🥅 Clean Sheets</h3>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">{HOMEPAGE_CONSTANTS.CONTAINER_4_TITLE}</h3>
               <div className="space-y-3">
                 <div className="flex items-center justify-between p-3 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg border border-blue-200">
                   <div className="flex items-center space-x-3">
@@ -347,14 +301,36 @@ export default function HomePage() {
           {/* League Tables Section with Tab Switcher */}
           <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 mb-8 border border-white/20">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">🏆 League Tables</h2>
-            {/* Only show top 4 teams */}
-            <MiniLeagueTableTabs />
+            <MiniLeagueTableTabs topSuncoast={topSuncoast} topMexican={topMexican} />
             <div className="mt-4 text-right">
               <Link href="/leagues" className="text-blue-600 hover:underline font-semibold">
                 View Full Tables →
               </Link>
             </div>
           </div>
+
+
+        {/* FPL League */}
+        <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 mb-8 border border-white/20">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">FPL</h2>
+            <div className="space-y-4"></div>
+              <Link
+                href="https://fantasy.premierleague.com/leagues/your-league-id-here"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 mb-8 border border-yellow-300 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+              >
+                <div className="flex flex-col md:flex-row items-center justify-between">
+                  <div className="mb-4 md:mb-0">
+                    <h2 className="text-2xl font-bold text-yellow-600 mb-2">📊 Disston City FPL League</h2>
+                    <p className="text-gray-600">Think you know football? Compete with teammates all season long!</p>
+                  </div>
+                  <button className="mt-4 md:mt-0 bg-yellow-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-yellow-600 transition-all duration-300">
+                    View & Join League →
+                  </button>
+                </div>
+              </Link>
+        </div>
 
           {/* Club News */}
           <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 mb-8 border border-white/20">
