@@ -1,7 +1,7 @@
 import Link from "next/link";
 import axios from "axios";
 import { useState } from "react";
-import { Router } from "next/router";
+import { useRouter } from "next/router";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -9,7 +9,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const router = Router;
+  const router = useRouter();
 
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
 
@@ -27,13 +27,18 @@ export default function LoginPage() {
       if (response.status === 200) {
         console.log("Login successful:", response.data);
         // Example: store token or redirect
-        // localStorage.setItem("token", response.data.token);
-        // router.push("/dashboard");
+        localStorage.setItem("token", response.data.access_token); // Store token in local storage
+        axios.defaults.headers.common["Authorization"] = `Bearer ${response.data.access_token}`; //
         router.push("/"); // Redirect to home page after successful login
       }
-    } catch (err: any) {
-      console.error("Login failed:", err.response?.data || err.message);
-      setError(err.response?.data?.detail || "Login failed");
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.error("Login failed:", err.response?.data || err.message);
+        setError(err.response?.data?.detail || "Login failed");
+      } else {
+        console.error("Unexpected error:", err);
+        setError("An unexpected error occurred");
+      }
     } finally {
       setLoading(false);
     }
@@ -95,7 +100,7 @@ export default function LoginPage() {
         </form>
 
         <p className="text-sm text-center text-gray-600 mt-6">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href="/register" className="text-blue-600 hover:underline">
             Register
           </Link>
