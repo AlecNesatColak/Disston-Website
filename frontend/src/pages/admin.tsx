@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { use, useEffect, useState } from 'react';
 import Player from '../models/interfaces/player';
+import { UUID } from 'crypto';
 
 
 
@@ -11,7 +12,7 @@ export default function HomePage() {
   const [playerRequests, setPlayerRequests] = useState<Player[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const handleApprove = async (playerId: number) => {
+  const handleApprove = async (playerId: UUID) => {
   try {
     await axios.put(`${API_BASE}/players/${playerId}/approve`);
     setPlayerRequests(prev => prev.filter(p => p.id !== playerId));
@@ -20,7 +21,7 @@ export default function HomePage() {
   }
 };
 
-const handleReject = async (playerId: number) => {
+const handleReject = async (playerId: UUID) => {
   try {
     await axios.delete(`${API_BASE}/players/${playerId}/reject`);
     setPlayerRequests(prev => prev.filter(p => p.id !== playerId));

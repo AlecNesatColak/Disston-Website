@@ -1,3 +1,4 @@
+from uuid import UUID
 from pydantic import BaseModel, Field, EmailStr, model_validator
 from typing import Optional
 from datetime import datetime
@@ -14,7 +15,7 @@ class PlayerBase(BaseModel):
     profile_image_url: Optional[str] = Field(None, max_length=500)  # enforce a sane URL limit
 
     is_captain: bool = False
-    status: int = Field(..., ge=0, le=2)
+    status: int = Field(2, ge=0, le=2) 
 
     goals: int = Field(0, ge=0)
     assists: int = Field(0, ge=0)
@@ -43,7 +44,7 @@ class PlayerCreate(PlayerBase):
 
 
 class PlayerRead(PlayerBase):
-    id: int
+    id: UUID
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
@@ -56,4 +57,10 @@ class PlayerRosterInfo(BaseModel):
     last_name: str
     position: PositionEnum
     jersey_number: Optional[int] = Field(None, ge=0, le=99)  # max 2-digit jersey numbers
+    appearances: int = Field(0, ge=0)
+    goals: int = Field(0, ge=0)
+    assists: int = Field(0, ge=0)
+    clean_sheets: Optional[int] = Field(None, ge=0)
+    cards: dict = Field(default_factory=lambda: {"yellow": 0, "red": 0})
+    joined_at: Optional[datetime] = None
     

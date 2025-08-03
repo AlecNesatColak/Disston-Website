@@ -6,14 +6,14 @@ from app.db.session import engine, Base
 from app.api.routes import auth, player
 
 app = FastAPI(
-    title="Sunday League API",
+    title="Disston API",
     version="1.0.0"
 )
 
 # Allow frontend (Next.js) during development
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Frontend dev URL
+    allow_origins=["http://localhost:3000", "https://disston-website.vercel.app"],  # Frontend dev URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -27,7 +27,7 @@ router = APIRouter()
 
 @router.get("/health")
 def health_check():
-    return "healthy"
+    return "Distton is healthy"
 
 router.include_router(auth.router, prefix="/auth", tags=["auth"])
 router.include_router(player.router, prefix="/players", tags=["players"])

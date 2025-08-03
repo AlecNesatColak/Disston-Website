@@ -1,3 +1,5 @@
+from sqlalchemy.dialects.postgresql import UUID
+import uuid
 from sqlalchemy import Column, Integer, String, Boolean, DateTime
 from sqlalchemy.sql import func
 from app.db.session import Base
@@ -5,7 +7,8 @@ from app.db.session import Base
 class Player(Base):
     __tablename__ = "players"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
+
 
     # Identity
     first_name = Column(String, nullable=False)

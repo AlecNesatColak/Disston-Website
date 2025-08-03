@@ -144,7 +144,7 @@ export default function RosterPage() {
                             )}
                           </div>
                           <div className="text-sm text-gray-500">
-                            Joined {player.joined_at ? new Date(player.joined_at).getFullYear() : 'N/A'}
+                            Joined {new Date(player.joined_at || '').toLocaleDateString()}
                           </div>
                         </div>
                       </div>
@@ -167,22 +167,22 @@ export default function RosterPage() {
                       {player.assists}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {player.clean_sheets || '-'}
+                      {player.clean_sheets}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       <div className="flex space-x-1">
-                        {player.yellow_cards > 0 && (
+                        {player.cards.red > 0 && (
                           <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs">
-                            🟨 {player.yellow_cards}
+                            🟨 {player.cards.yellow}
                           </span>
                         )}
-                        {player.red_cards > 0 && (
+                        {player.cards.red > 0 && (
                           <span className="bg-red-100 text-red-800 px-2 py-1 rounded text-xs">
-                            🟥 {player.red_cards}
+                            🟥 {player.cards.red}
                           </span>
                         )}
-                        {player.yellow_cards === 0 && player.red_cards === 0 && (
-                          <span className="text-gray-400">-</span>
+                        {player.cards.yellow === 0 && player.cards.red === 0 && (
+                          <span className="text-gray-400">0</span>
                         )}
                       </div>
                     </td>

@@ -15,7 +15,7 @@ export default function HomePage() {
 
   // Fetch players data
   useEffect(() => {
-    axios.get("http://localhost:8000/players")
+    axios.get("http://localhost:8000/players/active-players")
       .then(res => setPlayers(res.data))
       .catch(err => console.error("Failed to fetch players", err))
       .finally(() => setLoading(false));
