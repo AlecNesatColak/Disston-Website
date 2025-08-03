@@ -24,6 +24,11 @@ Base.metadata.create_all(bind=engine)
 
 # Register all API routes
 router = APIRouter()
+
+@router.get("/health")
+def health_check():
+    return "healthy"
+
 router.include_router(auth.router, prefix="/auth", tags=["auth"])
 router.include_router(player.router, prefix="/players", tags=["players"])
 
