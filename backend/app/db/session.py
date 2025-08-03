@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 # Load environment variables from .env file
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("SB_DB_URL")
 
 if not DATABASE_URL:
     # Fallback to SQLite for local development
