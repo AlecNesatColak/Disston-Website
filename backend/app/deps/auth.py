@@ -1,3 +1,4 @@
+from uuid import UUID
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, HTTPBearer
 from sqlalchemy.orm import Session
@@ -16,13 +17,17 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     )
     
     # Extract token from HTTPBearer
-    token_str = token.credentials
-    
+    token_str = token.credentials if hasattr(token, "credentials") else token
+
     payload = decode_access_token(token_str)
     if not payload or "sub" not in payload:
         raise credentials_exception
 
-    user_id = int(payload["sub"])
+    try:
+        user_id = UUID(payload["sub"])
+    except (ValueError, TypeError):
+        raise credentials_exception
+
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise credentials_exception

@@ -4,12 +4,14 @@ import Link from 'next/link';
 import { use, useEffect, useState } from 'react';
 import Player from '../models/interfaces/player';
 import { UUID } from 'crypto';
+import BlogPost from '@/models/interfaces/blogPost';
 
 
 
 export default function HomePage() {
   const API_BASE = "http://localhost:8000";
   const [playerRequests, setPlayerRequests] = useState<Player[]>([]);
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
 
   const handleApprove = async (playerId: UUID) => {
@@ -30,13 +32,48 @@ const handleReject = async (playerId: UUID) => {
   }
 };
 
+  // const handleBlogPost = async () => {
+  //   // Navigate to the blog post creation page
+  //   try {
+  //     await axios.post(`${API_BASE}/blog-posts/create`, {
+        
+  //     )
+  //   }
+  // };
+
+  const handleBlogPostEdit = async (blogId: UUID) => {
+    // Navigate to the blog post edit page
+    try {
+      await axios.put(`${API_BASE}/blog-posts/${blogId}/edit`);
+      // Optionally refresh the blog posts list
+    } catch (err) {
+      console.error("Failed to edit blog post:", err);
+    }
+  };
+
+
+  const handleBlogDelete = async (blogId: UUID) => {
+    try {
+      await axios.delete(`${API_BASE}/blog-posts/${blogId}`);
+      // Optionally refresh the blog posts list
+      
+    } catch (err) {
+      console.error("Failed to delete blog post:", err);
+    }
+  };
+
   useEffect(() => {
-    // Fetch player requests from the API
-    axios.get('http://localhost:8000/players/requests')
-      .then(res => setPlayerRequests(res.data))
-      .catch(err => console.error("Failed to fetch players", err))
-      .finally(() => setLoading(false));
-  }, []);
+  const fetchPlayerRequests = axios.get('http://localhost:8000/players/requests');
+  const fetchBlogPosts = axios.get('http://localhost:8000/blog-posts');
+
+  Promise.all([fetchPlayerRequests, fetchBlogPosts])
+    .then(([playerRes, blogRes]) => {
+      setPlayerRequests(playerRes.data);
+      setBlogPosts(blogRes.data.posts); // create and manage this state
+    })
+    .catch(err => console.error("Failed to fetch data", err))
+    .finally(() => setLoading(false));
+}, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 relative overflow-hidden">
@@ -162,19 +199,38 @@ const handleReject = async (playerId: UUID) => {
         {/* Club News */}
         <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 mb-8 border border-white/20">
           <h2 className="text-2xl font-bold text-gray-800 mb-6">📰 Club News</h2>
-          <div className="space-y-4">
-            <div className="border-l-4 border-blue-500 pl-4 p-3 bg-gradient-to-r from-blue-50 to-blue-100 rounded-r-lg border border-blue-200">
-              <div className="text-sm text-gray-500 mb-1">Dec 10, 2024</div>
-              <div className="font-semibold text-gray-800">New Season Registration Opens</div>
-              <div className="text-gray-600">Registration for the 2025 season is now open. Players must submit their applications by January 15th.</div>
-            </div>
-            <div className="border-l-4 border-green-500 pl-4 p-3 bg-gradient-to-r from-green-50 to-green-100 rounded-r-lg border border-green-200">
-              <div className="text-sm text-gray-500 mb-1">Dec 8, 2024</div>
-              <div className="font-semibold text-gray-800">Double League Challenge</div>
-              <div className="text-gray-600">Disston City is leading both the Suncoast League and Mexican League with only 3 matchdays remaining in each.</div>
-            </div>
 
-          </div>
+          {loading ? (
+            <p className="text-gray-500">Loading...</p>
+          ) : blogPosts.length === 0 ? (
+            <div className="flex flex-row items-center space-y-4 justify-between">
+              <p className="text-gray-500">No blog posts available.</p>
+              <button className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">Approve</button>
+            </div>
+            
+          ) : (
+            <div className="space-y-4">
+              {blogPosts.map((post) => (
+                <div
+                  key={post.id}
+                  className="p-4 bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-lg border border-yellow-200 hover:shadow-md transition-shadow"
+                >
+                  <h3 className="font-semibold text-gray-800">{post.title}</h3>
+                  <p className="text-sm text-gray-500 mb-2">{post.description}</p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs text-gray-400">{new Date(post.created_at).toLocaleDateString()}</span>
+                    <div>
+                      <button onClick={() => handleBlogPostEdit(post.id)} className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition-colors">Approve</button>
+                      <button onClick={() => handleBlogDelete(post.id)} className="ml-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors">Delete</button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+
+          
         </div>
 
         {/* Call to Action */}

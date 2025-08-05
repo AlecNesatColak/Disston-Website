@@ -3,7 +3,7 @@ from fastapi import APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.db.session import engine, Base
-from app.api.routes import auth, player
+from app.api.routes import auth, player, blog_posts
 
 app = FastAPI(
     title="Disston API",
@@ -31,6 +31,7 @@ def health_check():
 
 router.include_router(auth.router, prefix="/auth", tags=["auth"])
 router.include_router(player.router, prefix="/players", tags=["players"])
+router.include_router(blog_posts.router, prefix="/blog-posts", tags=["blog-posts"])
 
 # Include the router in the app
 app.include_router(router)
