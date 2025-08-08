@@ -13,7 +13,7 @@ app = FastAPI(
 # Allow frontend (Next.js) during development
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://disston-website.vercel.app"],  # Frontend dev URL
+    allow_origins=["http://localhost:3000", "https://disston-website.vercel.app", "https://disston.vercel.app/"],  # Frontend dev URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
