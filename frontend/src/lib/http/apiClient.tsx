@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApiError } from "@/models/interfaces/ApiError";
 import axios, {AxiosError} from "axios";
 import qs from "qs";
