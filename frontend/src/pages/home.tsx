@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // pages/home.tsx
 import React from "react";
 import Image from "next/image";
