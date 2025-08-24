@@ -4,7 +4,7 @@ import axios, {AxiosError} from "axios";
 import qs from "qs";
 
 export const api = axios.create({
-    baseURL: process.env.API_BASE_URL ?? "http://localhost:8000",
+    baseURL: process.env.NEXT_PUBLIC_API_PROD_BASE_URL ?? "http://localhost:8000",
     timeout: 12000,
     headers: {
         "Content-Type": "application/json",
