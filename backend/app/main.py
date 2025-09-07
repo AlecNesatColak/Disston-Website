@@ -3,7 +3,13 @@ from fastapi import APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.db.session import engine, Base
-from app.api.routes import auth, player, blog_posts
+from app.api.routes import auth, player, blog_posts, league, match
+
+# Import all models so SQLAlchemy can create tables
+from app.models import league as league_model
+from app.models import team as team_model  
+from app.models import league_standings as league_standings_model
+from app.models import match_new as match_model
 
 app = FastAPI(
     title="Disston API",
@@ -32,6 +38,8 @@ def health_check():
 router.include_router(auth.router, prefix="/auth", tags=["auth"])
 router.include_router(player.router, prefix="/players", tags=["players"])
 router.include_router(blog_posts.router, prefix="/blog-posts", tags=["blog-posts"])
+router.include_router(league.router, prefix="/api", tags=["league"])
+router.include_router(match.router, prefix="/api", tags=["match"])
 
 # Include the router in the app
 app.include_router(router)

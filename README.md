@@ -61,7 +61,7 @@ docker-compose down -v
 ### Backend Development
 ```bash
 cd backend
-.\venv\Scripts\activate
+.\venv\Scripts\activate || source venv/bin/activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
