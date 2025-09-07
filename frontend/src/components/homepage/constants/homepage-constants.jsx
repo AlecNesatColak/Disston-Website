@@ -1,7 +1,7 @@
 const HOMEPAGE_TEXT = {
   hero: {
     title: "Disston City Soccer Club",
-    subtitle: "Suncoast & Mexican League Champions",
+    subtitle: "2021 Mexican League Champions & 2025 Division Finalists",
     badges: {
       suncoastLeague: "🏆 Suncoast Soccer League",
       mexicanLeague: "⚽ Pinellas Park Mexican League",
