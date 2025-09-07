@@ -138,11 +138,11 @@ export default function HomePage() {
               <div className="text-gray-600">{HOMEPAGE_CONSTANTS.quickStats.leagues.label}</div>
             </Link>
             <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 text-center border border-white/20 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-              <div className="text-3xl font-bold text-purple-600 mb-2">15</div>
+              <div className="text-3xl font-bold text-purple-600 mb-2">1</div>
               <div className="text-gray-600">{HOMEPAGE_CONSTANTS.quickStats.titles.label}</div>
             </div>
             <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 text-center border border-white/20 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-              <div className="text-3xl font-bold text-orange-600 mb-2">8</div>
+              <div className="text-3xl font-bold text-orange-600 mb-2">3</div>
               <div className="text-gray-600">{HOMEPAGE_CONSTANTS.quickStats.seasons.label}</div>
             </div>
           </div>
