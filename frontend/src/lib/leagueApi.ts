@@ -1,5 +1,6 @@
 // API service for league data
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_PROD_BASE_URL || "http://localhost:8000";
 
 export interface League {
   id: string;
