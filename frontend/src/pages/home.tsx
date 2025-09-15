@@ -497,7 +497,13 @@ export default function HomePage() {
                 {HOMEPAGE_CONSTANTS.sections.topScorers.title}
               </h3>
               <div className="space-y-3">
-                {(isLoading ? [] : players.slice(0, 3)).map((player, index) => (
+                {(isLoading
+                  ? []
+                  : players
+                      .slice()
+                      .sort((a, b) => (b.goals ?? 0) - (a.goals ?? 0))
+                      .slice(0, 3)
+                ).map((player, index) => (
                   <div
                     key={player.id ?? index}
                     className="flex items-center justify-between p-3 bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-lg border border-yellow-200"
