@@ -74,7 +74,7 @@ const PlayerRequestForm: React.FC = () => {
     });
 
     try {
-      const res = await fetch("https://disston-website.onrender.com/", {
+      const res = await fetch("https://disston-website.onrender.com/players", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
