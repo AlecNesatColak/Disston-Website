@@ -528,6 +528,42 @@ export default function HomePage() {
               <div />
             </div>
 
+                        <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300">
+              <h3 className="text-xl font-bold text-gray-800 mb-4">
+                {HOMEPAGE_CONSTANTS.sections.assists.title}
+              </h3>
+              <div className="space-y-3">
+                {(isLoading
+                  ? []
+                  : players
+                      .slice()
+                      .sort((a, b) => (b.assists ?? 0) - (a.assists ?? 0))
+                      .slice(0, 3)
+                ).map((player, index) => (
+                  <div
+                    key={player.id ?? index}
+                    className="flex items-center justify-between p-3 bg-gradient-to-r from-green-50 to-green-100 rounded-lg border border-yellow-200"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
+                        {index + 1}
+                      </div>
+                      <div>
+                        <div className="font-semibold">{player.first_name}</div>
+                        <div className="text-sm text-gray-500">
+                          {player.position}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="font-bold text-green-600">
+                      {player.assists}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div />
+            </div>
+
             <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300">
               <h3 className="text-xl font-bold text-gray-800 mb-4">
                 {HOMEPAGE_CONSTANTS.sections.cleanSheets.title}

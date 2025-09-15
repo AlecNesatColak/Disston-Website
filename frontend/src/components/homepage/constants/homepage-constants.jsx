@@ -20,6 +20,7 @@ const HOMEPAGE_TEXT = {
     latestResults: { title: "🏆 Latest Results" },
     upcomingMatches: { title: "⚽ Upcoming Matches" },
     topScorers: { title: "🏆 Top Scorers" },
+    assists: { title: "🎯 Assists" },
     cleanSheets: { title: "🥅 Clean Sheets" },
     leagueTables: { title: "📋 League Tables" },
     fplLeague: { title: "🏆 FPL League" },
