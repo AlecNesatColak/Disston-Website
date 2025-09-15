@@ -260,21 +260,7 @@ const PlayerRequestForm: React.FC = () => {
                       placeholder="+1 (555) 123-4567"
                     />
                   </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Profile Image URL
-                    </label>
-                    <input
-                      type="url"
-                      name="profile_image_url"
-                      value={form.profile_image_url}
-                      onChange={handleChange}
-                      maxLength={500}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                      placeholder="https://example.com/photo.jpg"
-                    />
-                  </div>
+                
                 </div>
               </div>
 
