@@ -542,7 +542,7 @@ export default function HomePage() {
                 ).map((player, index) => (
                   <div
                     key={player.id ?? index}
-                    className="flex items-center justify-between p-3 bg-gradient-to-r from-green-50 to-green-100 rounded-lg border border-yellow-200"
+                    className="flex items-center justify-between p-3 bg-gradient-to-r from-green-50 to-green-100 rounded-lg border border-green-200"
                   >
                     <div className="flex items-center space-x-3">
                       <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
