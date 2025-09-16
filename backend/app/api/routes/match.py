@@ -48,7 +48,7 @@ def get_matches_by_team(team_id: UUID, db: Session = Depends(get_db)):
 def get_upcoming_matches(limit: int = 10, db: Session = Depends(get_db)):
     now = datetime.now()
     matches = db.query(Match).filter(
-        Match.away_team_id == "e58059d6-5b63-4f65-bb65-0c7e36ceb132" or Match.home_team_id == "e58059d6-5b63-4f65-bb65-0c7e36ceb132",
+        (Match.home_team_id == "e58059d6-5b63-4f65-bb65-0c7e36ceb132") | (Match.away_team_id == "e58059d6-5b63-4f65-bb65-0c7e36ceb132"),
         Match.match_date >= now,
         Match.status == "SCHEDULED"
     ).order_by(Match.match_date.asc()).limit(limit).all()
@@ -59,7 +59,7 @@ def get_upcoming_matches(limit: int = 10, db: Session = Depends(get_db)):
 def get_recent_matches(limit: int = 10, db: Session = Depends(get_db)):
     now = datetime.now()
     matches = db.query(Match).filter(
-        Match.away_team_id == "e58059d6-5b63-4f65-bb65-0c7e36ceb132" or Match.home_team_id == "e58059d6-5b63-4f65-bb65-0c7e36ceb132",
+        (Match.home_team_id == "e58059d6-5b63-4f65-bb65-0c7e36ceb132") | (Match.away_team_id == "e58059d6-5b63-4f65-bb65-0c7e36ceb132"),
         Match.match_date < now,
         Match.status == "COMPLETED"
     ).order_by(Match.match_date.desc()).limit(limit).all()

@@ -525,7 +525,8 @@ export default function HomePage() {
               <div />
             </div>
 
-                        <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300">
+            {/* Top Assists */}
+            <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300">
               <h3 className="text-xl font-bold text-gray-800 mb-4">
                 {HOMEPAGE_CONSTANTS.sections.assists.title}
               </h3>
@@ -561,6 +562,7 @@ export default function HomePage() {
               <div />
             </div>
 
+            {/* Top Clean Sheets */}
             <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300">
               <h3 className="text-xl font-bold text-gray-800 mb-4">
                 {HOMEPAGE_CONSTANTS.sections.cleanSheets.title}
