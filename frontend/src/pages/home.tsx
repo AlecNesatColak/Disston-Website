@@ -340,9 +340,6 @@ export default function HomePage() {
                           : "TBD"}
                       </div>
                     </div>
-                    <div className="text-sm text-gray-500">
-                      {match.match_time} - {match.league.name}
-                    </div>
                   </div>
                 ))}
               </div>
