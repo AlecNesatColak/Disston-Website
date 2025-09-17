@@ -25,7 +25,9 @@ def get__active_players(db: Session = Depends(get_db)):
 
 @router.get("/roster", response_model=list[PlayerRead])
 def get_roster(db: Session = Depends(get_db)):
-    return db.query(Player).filter(Player.status == 1).orderBy(Player.goals.desc() and Player.assists.desc()).all()
+    roster = db.query(Player).filter(Player.status == 1).order_by(Player.goals.desc(), Player.assists.desc()).all()
+    #print(roster)
+    return roster
 
 @router.delete("/{player_id}", response_model=PlayerRead)
 def delete_player(player_id: UUID, db: Session = Depends(get_db)):
