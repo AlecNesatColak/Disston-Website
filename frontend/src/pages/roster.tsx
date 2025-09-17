@@ -122,11 +122,31 @@ export default function RosterPage() {
                       </span>
                     </td>
 
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{player.jersey_number ?? "-"}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{player.appearances ?? 0}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{player.goals ?? 0}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{player.assists ?? 0}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{player.clean_sheets ?? 0}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <span className="inline-block px-2 py-1 rounded-full bg-gradient-to-r from-blue-400 via-yellow-200 to-green-400 text-white font-bold animate-spin-slow shadow-lg transition-transform duration-500" style={{ display: 'inline-flex', alignItems: 'center', minWidth: 40, justifyContent: 'center' }}>
+                        <span style={{ fontSize: '1.2em', marginRight: '0.2em' }}>👕</span>{player.jersey_number ?? "-"}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <span className="inline-block px-2 py-1 rounded bg-blue-100 text-blue-700 font-bold animate-pulse shadow-md transition-transform duration-300">
+                        👟 {player.appearances ?? 0}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <span className="inline-block px-2 py-1 rounded bg-green-50 text-green-700 font-bold animate-pulse shadow-md transition-transform duration-300">
+                        ⚽ {player.goals ?? 0}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <span className="inline-block px-2 py-1 rounded bg-purple-50 text-purple-700 font-bold animate-bounce shadow-md transition-transform duration-300">
+                        🎯 {player.assists ?? 0}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <span className="inline-block px-2 py-1 rounded bg-yellow-50 text-yellow-700 font-bold animate-pulse shadow-md transition-transform duration-300">
+                        🧤 {player.clean_sheets ?? 0}
+                      </span>
+                    </td>
 
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       <div className="flex gap-2">
