@@ -151,12 +151,12 @@ export default function RosterPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       <div className="flex gap-2">
                         {player.yellow_cards > 0 && (
-                          <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs">🟨 {player.yellow_cards}</span>
+                            <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs">🟨 {player.yellow_cards} <span className="ml-1">😞</span></span>
                         )}
                         {player.red_cards > 0 && (
-                          <span className="bg-red-100 text-red-800 px-2 py-1 rounded text-xs">🟥 {player.red_cards}</span>
+                          <span className="bg-red-100 text-red-800 px-2 py-1 rounded text-xs">🟥 {player.red_cards} <span className="ml-1">😡</span></span>
                         )}
-                        {(player.yellow_cards ?? 0) === 0 && (player.red_cards ?? 0) === 0 && <span className="text-gray-400">0</span>}
+                        {(player.yellow_cards ?? 0) === 0 && (player.red_cards ?? 0) === 0 && <span className="px-2 py-1 rounded text-xs">0 <span className="ml-1">😊</span></span>}
                       </div>
                     </td>
                   </tr>
