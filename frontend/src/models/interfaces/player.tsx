@@ -12,10 +12,8 @@ interface Player {
     assists: number;
     clean_sheets?: number;
     appearances: number;
-    cards: {
-      yellow: number;
-      red: number;
-    };
+    yellow_cards: number;
+    red_cards: number;
     joined_at?: string;
     profile_image_url?: string;
   }
