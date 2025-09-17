@@ -16,6 +16,9 @@ export const rejectPlayer = (id: string, signal?: AbortSignal) =>
 export const getActivePlayers = (signal?: AbortSignal) =>
   api.get<Player[]>("/players/active-players", { signal }).then((r) => r.data);
 
+export const getRoster = (signal?: AbortSignal) =>
+  api.get<Player[]>("/players/roster", { signal }).then((r) => r.data);
+
 // Blog posts
 export const listBlogPosts = (signal?: AbortSignal) =>
   api.get<{ posts: BlogPost[] }>("/blog-posts", { signal }).then((r) => r.data.posts ?? []);

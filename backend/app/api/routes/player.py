@@ -23,6 +23,10 @@ def create_player(player: schemas.player.PlayerCreate, db: Session = Depends(get
 def get__active_players(db: Session = Depends(get_db)):
     return db.query(Player).filter(Player.status == 1).all()
 
+@router.get("/roster", response_model=list[PlayerRead])
+def get_roster(db: Session = Depends(get_db)):
+    return db.query(Player).filter(Player.status == 1).orderBy(Player.goals.desc() and Player.assists.desc()).all()
+
 @router.delete("/{player_id}", response_model=PlayerRead)
 def delete_player(player_id: UUID, db: Session = Depends(get_db)):
     db_player = db.query(Player).filter(Player.id == player_id).first()

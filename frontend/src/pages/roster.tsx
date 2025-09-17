@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import type Player from "@/models/interfaces/player";
 import { getPositionColor } from "@/models/helpers/position-color";
-import { getActivePlayers } from "@/lib/http/adminApi";
+import { getRoster } from "@/lib/http/adminApi";
 
 export default function RosterPage() {
   const {
@@ -13,7 +13,7 @@ export default function RosterPage() {
     error,
   } = useQuery<Player[]>({
     queryKey: ["players", "roster"],
-    queryFn: ({ signal }) => getActivePlayers(signal),
+    queryFn: ({ signal }) => getRoster(signal),
   });
 
   if (isLoading) {
