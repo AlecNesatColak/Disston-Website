@@ -44,8 +44,6 @@ class PlayerCreate(PlayerBase):
 
 
 class PlayerUpdate(BaseModel):
-    #goals: Optional[Goal] = Field(None, ge=0)
-    #assists: Optional[Assist] = Field(None, ge=0)
     goals: Optional[int] = Field(None, ge=0)
     assists: Optional[int] = Field(None, ge=0)
     clean_sheets: Optional[int] = Field(None, ge=0)
@@ -73,8 +71,6 @@ class PlayerRosterInfo(BaseModel):
     appearances: int = Field(0, ge=0)
     goals: int = Field(0, ge=0)
     assists: int = Field(0, ge=0)
-    #goals: Goal = Field(0, ge=0)
-    #assists: Assist = Field(0, ge=0)
     clean_sheets: Optional[int] = Field(None, ge=0)
     cards: dict = Field(default_factory=lambda: {"yellow": 0, "red": 0})
     joined_at: Optional[datetime] = None
