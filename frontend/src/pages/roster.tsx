@@ -1,12 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Image from "next/image";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type Player from "@/models/interfaces/player";
 import { getPositionColor } from "@/models/helpers/position-color";
-import { getRoster } from "@/lib/http/adminApi";
+import { getRoster, updatePlayer } from "@/lib/http/adminApi";
+import EditPlayerModal from "@/components/EditPlayerModal";
+import React, { useState } from "react";
 
 export default function RosterPage() {
+  const queryClient = useQueryClient();
+  
   const {
     data: players = [],
     isLoading,
@@ -15,6 +19,26 @@ export default function RosterPage() {
     queryKey: ["players", "roster"],
     queryFn: ({ signal }) => getRoster(signal),
   });
+
+  const [editingPlayer, setEditingPlayer] = useState<Player | null>(null);
+
+  const updatePlayerMutation = useMutation({
+    mutationFn: ({ id, playerData }: { id: string; playerData: Partial<Player> }) =>
+      updatePlayer(id, playerData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["players", "roster"] });
+      setEditingPlayer(null);
+    },
+  });
+
+  const handleSavePlayer = async (updatedData: Partial<Player>) => {
+    if (!editingPlayer) return;
+    
+    await updatePlayerMutation.mutateAsync({
+      id: editingPlayer.id,
+      playerData: updatedData,
+    });
+  };
 
   if (isLoading) {
     return (
@@ -73,6 +97,7 @@ export default function RosterPage() {
                   <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Assists</th>
                   <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Clean Sheets</th>
                   <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cards</th>
+                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Edit</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -159,6 +184,14 @@ export default function RosterPage() {
                         {(player.yellow_cards ?? 0) === 0 && (player.red_cards ?? 0) === 0 && <span className="px-2 py-1 rounded text-xs">0 <span className="ml-1">😊</span></span>}
                       </div>
                     </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <div className="flex gap-2">
+                        
+                        <button onClick={() => setEditingPlayer(player)} className="bg-yellow-600 text-white px-3 py-1 rounded-lg hover:bg-yellow-700 transition-colors">
+                          Edit
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -174,6 +207,12 @@ export default function RosterPage() {
           <Stat label="Captains" value={players.filter((p) => p.is_captain).length} accent="text-yellow-600" />
         </div>
       </div>
+      <EditPlayerModal
+        player={editingPlayer}
+        isOpen={!!editingPlayer}
+        onClose={() => setEditingPlayer(null)}
+        onSave={handleSavePlayer}
+      />
     </div>
   );
 }

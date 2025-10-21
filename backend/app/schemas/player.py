@@ -1,10 +1,13 @@
 from uuid import UUID
+from backend.app.models.assist import Assist
+from backend.app.models.goal import Goal
 from pydantic import BaseModel, Field, EmailStr, model_validator
 from typing import Optional
 from datetime import datetime
 from app.schemas.enums.position_enum import PositionEnum
 
 class PlayerBase(BaseModel):
+    #id: UUID
     first_name: str = Field(..., min_length=1, max_length=50)
     last_name: str = Field(..., min_length=1, max_length=50)
     position: PositionEnum
@@ -17,6 +20,8 @@ class PlayerBase(BaseModel):
     is_captain: bool = False
     status: int = Field(2, ge=0, le=2) 
 
+    #goals: Goal = Field(0, ge=0)
+    #assists: Assist = Field(0, ge=0)
     goals: int = Field(0, ge=0)
     assists: int = Field(0, ge=0)
     clean_sheets: Optional[int] = Field(None, ge=0)
@@ -43,6 +48,16 @@ class PlayerCreate(PlayerBase):
     pass
 
 
+class PlayerUpdate(BaseModel):
+    goals: Optional[Goal] = Field(None, ge=0)
+    assists: Optional[Assist] = Field(None, ge=0)
+    clean_sheets: Optional[int] = Field(None, ge=0)
+    appearances: Optional[int] = Field(None, ge=0)
+    yellow_cards: Optional[int] = Field(None, ge=0)
+    red_cards: Optional[int] = Field(None, ge=0)
+    updated_at: Optional[datetime] = None
+
+
 class PlayerRead(PlayerBase):
     id: UUID
     created_at: Optional[datetime] = None
@@ -53,6 +68,7 @@ class PlayerRead(PlayerBase):
 
 
 class PlayerRosterInfo(BaseModel):
+    id: UUID
     first_name: str
     last_name: str
     position: PositionEnum
@@ -60,6 +76,8 @@ class PlayerRosterInfo(BaseModel):
     appearances: int = Field(0, ge=0)
     goals: int = Field(0, ge=0)
     assists: int = Field(0, ge=0)
+    #goals: Goal = Field(0, ge=0)
+    #assists: Assist = Field(0, ge=0)
     clean_sheets: Optional[int] = Field(None, ge=0)
     cards: dict = Field(default_factory=lambda: {"yellow": 0, "red": 0})
     joined_at: Optional[datetime] = None

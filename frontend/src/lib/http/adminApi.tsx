@@ -19,6 +19,9 @@ export const getActivePlayers = (signal?: AbortSignal) =>
 export const getRoster = (signal?: AbortSignal) =>
   api.get<Player[]>("/players/roster", { signal }).then((r) => r.data);
 
+export const updatePlayer = (id: string, playerData: Partial<Player>, signal?: AbortSignal) =>
+  api.put<Player>(`players/player/${encodeURIComponent(id)}/edit`, playerData, { signal }).then((r) => r.data);
+
 // Blog posts
 export const listBlogPosts = (signal?: AbortSignal) =>
   api.get<{ posts: BlogPost[] }>("/blog-posts", { signal }).then((r) => r.data.posts ?? []);

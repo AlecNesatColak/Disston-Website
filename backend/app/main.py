@@ -3,7 +3,7 @@ from fastapi import APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.db.session import engine, Base
-from app.api.routes import auth, player, blog_posts, league, match
+from app.api.routes import auth, player, blog_posts, league, match, admin
 
 # Import all models so SQLAlchemy can create tables
 from app.models import league as league_model
@@ -40,6 +40,7 @@ router.include_router(player.router, prefix="/players", tags=["players"])
 router.include_router(blog_posts.router, prefix="/blog-posts", tags=["blog-posts"])
 router.include_router(league.router, prefix="/api", tags=["league"])
 router.include_router(match.router, prefix="/api", tags=["match"])
+router.include_router(admin.router, prefix="/api", tags=["admin"])
 
 # Include the router in the app
 app.include_router(router)

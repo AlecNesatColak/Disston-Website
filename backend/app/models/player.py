@@ -3,6 +3,7 @@ import uuid
 from sqlalchemy import Column, Integer, String, Boolean, DateTime
 from sqlalchemy.sql import func
 from app.db.session import Base
+from sqlalchemy.orm import relationship
 
 class Player(Base):
     __tablename__ = "players"
@@ -22,12 +23,14 @@ class Player(Base):
     profile_image_url = Column(String, nullable=True)
 
     # Role & Status
-    is_captain = Column(Boolean, default=False)
-    status = Column(Integer, default=0)
+    is_captain = Column(Boolean, default=False, nullable=False)
+    status = Column(Integer, default=0, nullable=False)  
 
     # Performance Totals (aggregated)
     goals = Column(Integer, default=0)
     assists = Column(Integer, default=0)
+    #goals = relationship("Goal", back_populates="player")
+    #assists = relationship("Assist", back_populates="player")
     clean_sheets = Column(Integer, default=0)
     appearances = Column(Integer, default=0)
     yellow_cards = Column(Integer, default=0)
