@@ -1,20 +1,17 @@
 import datetime
 from uuid import UUID
-from app.schemas.player import PlayerRead, PlayerRosterInfo, PlayerUpdate
+from app.schemas.player import PlayerRead, PlayerRosterInfo, PlayerUpdate, PlayerCreate
 from app.models.player import Player
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.db.deps import get_db
-from app import models, schemas
-from typing import Optional
-from pydantic import BaseModel, Field
 
 router = APIRouter()
 
 
 
 @router.post("/", response_model=PlayerRead)
-def create_player(player: schemas.player.PlayerCreate, db: Session = Depends(get_db)):
+def create_player(player: PlayerCreate, db: Session = Depends(get_db)):
     db_player = Player(**player.dict())
     db.add(db_player)
     db.commit()
@@ -66,7 +63,7 @@ def reject_player(player_id: UUID, db: Session = Depends(get_db)):
     return db_player
 
 @router.put("/player/{player_id}/edit", response_model=PlayerRead)
-def edit_player(player_id: UUID, player_update: schemas.player.PlayerUpdate, db: Session = Depends(get_db)):
+def edit_player(player_id: UUID, player_update: PlayerUpdate, db: Session = Depends(get_db)):
     db_player = db.query(Player).filter(Player.id == player_id).first()
     if not db_player:
         raise HTTPException(status_code=404, detail="Player not found")

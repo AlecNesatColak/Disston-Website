@@ -10,6 +10,11 @@ from app.models import league as league_model
 from app.models import team as team_model  
 from app.models import league_standings as league_standings_model
 from app.models import match_new as match_model
+from app.models import goal as goal_model
+from app.models import assist as assist_model
+from app.models import player as player_model
+from app.models import user as user_model
+from app.models import blog_posts as blog_posts_model
 
 app = FastAPI(
     title="Disston API",
