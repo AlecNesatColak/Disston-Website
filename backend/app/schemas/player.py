@@ -1,6 +1,6 @@
 from uuid import UUID
-from backend.app.models.assist import Assist
-from backend.app.models.goal import Goal
+#from app.models.assist import Assist
+#from app.models.goal import Goal
 from pydantic import BaseModel, Field, EmailStr, model_validator
 from typing import Optional
 from datetime import datetime
@@ -49,8 +49,8 @@ class PlayerCreate(PlayerBase):
 
 
 class PlayerUpdate(BaseModel):
-    goals: Optional[Goal] = Field(None, ge=0)
-    assists: Optional[Assist] = Field(None, ge=0)
+    goals: Optional[int] = Field(None, ge=0)
+    assists: Optional[int] = Field(None, ge=0)
     clean_sheets: Optional[int] = Field(None, ge=0)
     appearances: Optional[int] = Field(None, ge=0)
     yellow_cards: Optional[int] = Field(None, ge=0)
