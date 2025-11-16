@@ -652,6 +652,24 @@ export default function HomePage() {
             </Link>
           </div>
 
+          <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 rounded-xl shadow-2xl p-8 text-center text-white relative overflow-hidden mb-8 border border-white/20 ">
+            <div className="absolute top-0 left-0 w-32 h-32 bg-white/10 rounded-full -translate-x-16 -translate-y-16" />
+            <div className="absolute bottom-0 right-0 w-24 h-24 bg-white/10 rounded-full translate-x-12 translate-y-12" />
+            <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-white/10 rounded-full" />
+
+            <div className="relative z-10">
+              <h2 className="text-3xl font-bold mb-4">
+                {"See the Photo Gallery"}
+              </h2>
+              <Link
+                href="/photo-gallery"
+                className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg inline-block"
+              >
+                View Photo Gallery
+              </Link>
+            </div>
+          </div>
+
           {/* CTA */}
           <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 rounded-xl shadow-2xl p-8 text-center text-white relative overflow-hidden">
             <div className="absolute top-0 left-0 w-32 h-32 bg-white/10 rounded-full -translate-x-16 -translate-y-16" />

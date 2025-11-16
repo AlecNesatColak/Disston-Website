@@ -1,13 +1,40 @@
 import { Galleria } from 'primereact/galleria';
+import { getAllWeeks, getPhotosForWeek } from '../../components/MatchWeekGallery';
+import { GetStaticPaths, GetStaticProps } from 'next';
 
-export default function WeekGallery({ week, photos }) {
-    const images = photos.map((src) => ({
+// Type for component props
+interface WeekGalleryProps {
+  week: string;
+  photos: string[];
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const weeks = getAllWeeks();
+  return {
+    paths: weeks.map((week: string) => ({ params: { week } })),
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const week = params?.week as string;
+  const photos = getPhotosForWeek(week);
+  return {
+    props: {
+      week,
+      photos,
+    },
+  };
+};
+
+export default function WeekGallery({ week, photos }: WeekGalleryProps) {
+    const images = photos.map((src: string) => ({
       itemImageSrc: src,
       thumbnailImageSrc: src,
       alt: `${week} - photo`,
     }));
   
-    const itemTemplate = (item) => (
+    const itemTemplate = (item: { itemImageSrc: string; alt: string }) => (
       <img
         src={item.itemImageSrc}
         alt={item.alt}
@@ -15,7 +42,7 @@ export default function WeekGallery({ week, photos }) {
       />
     );
   
-    const thumbnailTemplate = (item) => (
+    const thumbnailTemplate = (item: { thumbnailImageSrc: string; alt: string }) => (
       <img
         src={item.thumbnailImageSrc}
         alt={item.alt}
