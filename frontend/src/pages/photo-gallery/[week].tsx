@@ -1,6 +1,7 @@
 import { Galleria } from 'primereact/galleria';
 import { getAllWeeks, getPhotosForWeek } from '../../components/MatchWeekGallery';
 import { GetStaticPaths, GetStaticProps } from 'next';
+import Image from 'next/image';
 
 // Convert folder name -> URL slug
 function slugify(name: string) {
@@ -14,7 +15,7 @@ function unslugify(slug: string) {
 
 // Props
 interface WeekGalleryProps {
-  week: string;      // original folder name
+  week: string;
   photos: string[];
 }
 
@@ -27,10 +28,9 @@ interface GalleryImage {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const weeks = getAllWeeks();
-
   return {
     paths: weeks.map((week: string) => ({
-      params: { week: slugify(week) },    // safe URL version
+      params: { week: slugify(week) },
     })),
     fallback: false,
   };
@@ -39,7 +39,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const slug = params?.week as string;
   const realFolderName = unslugify(slug);
-
   const photos = getPhotosForWeek(realFolderName);
 
   return {
@@ -58,17 +57,22 @@ export default function WeekGallery({ week, photos }: WeekGalleryProps) {
   }));
 
   const itemTemplate = (item: GalleryImage) => (
-    <img
+    <Image
       src={item.itemImageSrc}
       alt={item.alt}
+      width={800} // approximate width
+      height={600} // approximate height
       style={{ width: '100%', height: 'auto', borderRadius: '12px' }}
+      priority
     />
   );
 
   const thumbnailTemplate = (item: GalleryImage) => (
-    <img
+    <Image
       src={item.thumbnailImageSrc}
       alt={item.alt}
+      width={150} // thumbnail size
+      height={100}
       style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
     />
   );
@@ -93,9 +97,7 @@ export default function WeekGallery({ week, photos }: WeekGalleryProps) {
         </svg>
       </div>
 
-      <h1 className="text-4xl font-bold text-white z-10">
-        {week}
-      </h1>
+      <h1 className="text-4xl font-bold text-white z-10">{week}</h1>
 
       <div className="w-full max-w-4xl bg-white shadow-2xl rounded-2xl p-6 z-10">
         <Galleria
