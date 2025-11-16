@@ -18,6 +18,13 @@ interface WeekGalleryProps {
   photos: string[];
 }
 
+// Gallery item type
+interface GalleryImage {
+  itemImageSrc: string;
+  thumbnailImageSrc: string;
+  alt: string;
+}
+
 export const getStaticPaths: GetStaticPaths = async () => {
   const weeks = getAllWeeks();
 
@@ -44,18 +51,26 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export default function WeekGallery({ week, photos }: WeekGalleryProps) {
-  const images = photos.map((src) => ({
+  const images: GalleryImage[] = photos.map((src) => ({
     itemImageSrc: src,
     thumbnailImageSrc: src,
     alt: `${week} - photo`,
   }));
 
-  const itemTemplate = (item: any) => (
-    <img src={item.itemImageSrc} alt={item.alt} style={{ width: '100%', height: 'auto', borderRadius: '12px' }} />
+  const itemTemplate = (item: GalleryImage) => (
+    <img
+      src={item.itemImageSrc}
+      alt={item.alt}
+      style={{ width: '100%', height: 'auto', borderRadius: '12px' }}
+    />
   );
 
-  const thumbnailTemplate = (item: any) => (
-    <img src={item.thumbnailImageSrc} alt={item.alt} style={{ width: '100%', height: 'auto', borderRadius: '8px' }} />
+  const thumbnailTemplate = (item: GalleryImage) => (
+    <img
+      src={item.thumbnailImageSrc}
+      alt={item.alt}
+      style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+    />
   );
 
   const responsiveOptions = [
