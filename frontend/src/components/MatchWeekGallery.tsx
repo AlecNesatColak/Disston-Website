@@ -9,7 +9,7 @@ export function getAllWeeks() {
   );
 }
 
-export function getPhotosForWeek(week) {
+export function getPhotosForWeek(week: string) {
   const folderPath = path.join(GALLERY_ROOT, week);
   if (!fs.existsSync(folderPath)) return [];
 
