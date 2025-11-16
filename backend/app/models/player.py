@@ -29,8 +29,6 @@ class Player(Base):
     # Performance Totals (aggregated)
     goals = Column(Integer, default=0)
     assists = Column(Integer, default=0)
-    #goals = relationship("Goal", back_populates="player")
-    #assists = relationship("Assist", back_populates="player")
     clean_sheets = Column(Integer, default=0)
     appearances = Column(Integer, default=0)
     yellow_cards = Column(Integer, default=0)
