@@ -1,29 +1,28 @@
-import Link from "next/link";
-import { getAllWeeks } from "../../components/MatchWeekGallery";
+import Link from 'next/link';
+import { GetStaticProps } from 'next';
+import { getAllWeeks } from '../../components/MatchWeekGallery';
 
-function slugify(name: string) {
-  return encodeURIComponent(name.replace(/\s+/g, "-").toLowerCase());
+interface PhotoGalleryIndexProps {
+  weeks: string[];
 }
 
-export async function getStaticProps() {
-  const weeks = getAllWeeks();
-
+export const getStaticProps: GetStaticProps<PhotoGalleryIndexProps> = async () => {
+  const weeks = getAllWeeks(); // must return string[]
   return {
     props: { weeks },
   };
-}
+};
 
-export default function PhotoGalleryIndex({ weeks }) {
+export default function PhotoGalleryIndex({ weeks }: PhotoGalleryIndexProps) {
   return (
     <div className="p-8">
       <h1 className="text-4xl mb-6">Matchweek Galleries</h1>
-
-      <ul className="space-y-4">
+      <ul className="space-y-3">
         {weeks.map((week) => (
           <li key={week}>
             <Link
-              href={`/photo-gallery/${slugify(week)}`}
-              className="text-blue-600 underline"
+              href={`/photo-gallery/${encodeURIComponent(week.replace(/\s+/g, '-').toLowerCase())}`}
+              className="text-blue-600 hover:underline"
             >
               {week}
             </Link>
